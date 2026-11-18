@@ -166,14 +166,11 @@ def fetch_live_quote():
             print(f"⚠️ Quote error: {p.get('message')}")
             return None
 
-        qt = p.get("datetime") or p.get("timestamp")
-        if not qt:
-            print("⚠️ Quote has no timestamp.")
+        qt = p.get("last_quote_at")
+        if not qt or not str(qt).isdigit():
+            print("⚠️ Quote has no last_quote_at.")
             return None
-        if str(qt).isdigit():
-            quote_ts = pd.Timestamp(int(qt), unit="s", tz="UTC")
-        else:
-            quote_ts = to_utc_timestamp(qt)
+        quote_ts = pd.Timestamp(int(qt), unit="s", tz="UTC")
 
         age = (pd.Timestamp(utc_now()) - quote_ts).total_seconds()
         if age < -30 or age > MAX_QUOTE_AGE_SECONDS:
