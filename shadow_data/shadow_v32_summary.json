@@ -1,11 +1,11 @@
 {
-  "updated_utc": "2026-11-19 18:02:28",
-  "total_signals": 13,
-  "open": 1,
+  "updated_utc": "2026-11-19 18:32:27",
+  "total_signals": 14,
+  "open": 2,
   "closed": 12,
   "wins": 6,
   "losses": 6,
   "win_rate_pct": 50.0,
   "total_points": 55.9,
-  "avg_delay_minutes": 4.6
+  "avg_delay_minutes": 4.4
 }
