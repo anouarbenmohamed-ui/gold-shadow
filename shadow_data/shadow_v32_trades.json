@@ -150,5 +150,24 @@
     "quote_age_seconds": 42,
     "adx": 33.66,
     "models": "GradientBoosting:71.7%"
+  },
+  {
+    "id": 9,
+    "type": "BUY",
+    "strategy": "TREND",
+    "entry": 3712.85,
+    "sl": 3695.83,
+    "tp": 3741.2,
+    "status": "OPEN",
+    "open_time": "2026-11-19 03:32:22",
+    "close_time": null,
+    "close_price": null,
+    "points": null,
+    "both_touched": false,
+    "signal_candle_time": "2026-11-19T03:00:00+00:00",
+    "delay_minutes": 2.4,
+    "quote_age_seconds": 24,
+    "adx": 33.24,
+    "models": "RandomForest:77.0%, GradientBoosting:68.3%"
   }
 ]
