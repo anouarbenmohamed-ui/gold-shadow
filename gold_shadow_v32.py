@@ -9,6 +9,7 @@ GOLD ELITE v3.2 - SHADOW MODE
 """
 
 import os
+import re
 import csv
 import json
 import datetime
@@ -70,14 +71,100 @@ def save_trades(trades):
     os.replace(tmp, TRADES_FILE)
 
 
+PRE_FILTER_DELAY_MIN = 15      # إشارات متأخرة جداً (تشغيل يدوي) تُستبعد من تحليل الفلاتر
+
+
+def compute_reversal_flag(trades, trade_type, now_str):
+    """True إذا كانت الإشارة السابقة بعكس الاتجاه قبل ساعة أو أقل."""
+    if not trades:
+        return False
+    prev = max(trades, key=lambda t: t.get("open_time") or "")
+    try:
+        gap_min = (pd.Timestamp(now_str) - pd.Timestamp(prev["open_time"])).total_seconds() / 60
+    except Exception:
+        return False
+    return bool(prev.get("type") != trade_type and gap_min <= 66)
+
+
+def enrich(trades):
+    """يكمل الحقول المشتقة للصفقات القديمة (في الذاكرة فقط، لا يغيّر ملف JSON)."""
+    ordered = sorted(trades, key=lambda t: t.get("open_time") or "")
+    prev = None
+    for t in ordered:
+        if t.get("max_conf") is None:
+            vals = re.findall(r":(\d+(?:\.\d+)?)%", t.get("models") or "")
+            t["max_conf"] = max(float(v) for v in vals) if vals else None
+            t["n_models"] = len(vals)
+        if t.get("risk_pts") is None:
+            try:
+                t["risk_pts"] = round(abs(float(t["entry"]) - float(t["sl"])), 2)
+            except Exception:
+                t["risk_pts"] = None
+        if "reversal_1h" not in t:
+            flag = False
+            if prev is not None:
+                try:
+                    gap = (pd.Timestamp(t["open_time"]) - pd.Timestamp(prev["open_time"])).total_seconds() / 60
+                    flag = bool(prev.get("type") != t.get("type") and gap <= 66)
+                except Exception:
+                    flag = False
+            t["reversal_1h"] = flag
+        prev = t
+
+
+def _conf70(t):
+    return (t.get("max_conf") or 0) > 70
+
+
+def _risk20(t):
+    return t.get("risk_pts") is not None and t["risk_pts"] <= 20
+
+
+def _no_rev(t):
+    return t.get("reversal_1h") is False
+
+
+def _trend(t):
+    return t.get("with_trend") is True
+
+
+# الفلاتر المرشحة: تُحسب نتائجها افتراضياً على نفس الصفقات (لا تغيّر الصفقات المسجلة)
+RULES = {
+    "baseline": lambda t: True,
+    "conf_gt_70": _conf70,
+    "risk_le_20": _risk20,
+    "no_reversal_1h": _no_rev,
+    "with_trend_sma200": _trend,
+    "conf70_and_risk20": lambda t: _conf70(t) and _risk20(t),
+    "conf70_and_trend": lambda t: _conf70(t) and _trend(t),
+    "conf70_risk20_trend": lambda t: _conf70(t) and _risk20(t) and _trend(t),
+}
+
+
+def rule_stats(closed, rule):
+    sub = [t for t in closed if rule(t)]
+    wins = [t for t in sub if t["status"] == "WIN"]
+    r_total = sum((t.get("points") or 0) / t["risk_pts"] for t in sub if t.get("risk_pts"))
+    return {
+        "closed": len(sub),
+        "wins": len(wins),
+        "win_rate_pct": round(len(wins) / len(sub) * 100, 1) if sub else None,
+        "R": round(r_total, 2),
+        "points": round(sum(t.get("points") or 0 for t in sub), 2),
+    }
+
+
 def export_csv_and_summary(trades):
-    """يكتب CSV يفتح في Excel + ملخص الأداء."""
+    """يكتب CSV يفتح في Excel + ملخص الأداء + نتائج الفلاتر المرشحة."""
     os.makedirs(DATA_DIR, exist_ok=True)
+    enrich(trades)
     fields = [
         "id", "type", "strategy", "entry", "sl", "tp", "status",
         "open_time", "close_time", "close_price", "points",
         "both_touched", "signal_candle_time", "delay_minutes",
         "quote_age_seconds", "adx", "models",
+        "with_trend", "signal_close", "sma50", "sma200",
+        "max_conf", "n_models", "reversal_1h", "risk_pts", "mfe", "mae", "new_schema",
     ]
     with open(CSV_FILE, "w", encoding="utf-8-sig", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fields, extrasaction="ignore")
@@ -101,9 +188,25 @@ def export_csv_and_summary(trades):
             float(np.mean([t["delay_minutes"] for t in trades if t.get("delay_minutes") is not None])), 1
         ) if any(t.get("delay_minutes") is not None for t in trades) else None,
     }
+    for label, flag in (("with_trend", True), ("against_trend", False)):
+        sub = [t for t in closed if t.get("with_trend") is flag]
+        sub_wins = [t for t in sub if t["status"] == "WIN"]
+        summary[f"{label}_closed"] = len(sub)
+        summary[f"{label}_win_rate_pct"] = round(len(sub_wins) / len(sub) * 100, 1) if sub else None
+        summary[f"{label}_points"] = round(sum(t.get("points") or 0 for t in sub), 2)
+
+    analysis = [
+        t for t in closed
+        if not (t.get("delay_minutes") is not None and t["delay_minutes"] > PRE_FILTER_DELAY_MIN)
+    ]
+    new_only = [t for t in analysis if t.get("new_schema")]
+    # filters_all: كل الصفقات (فيها صفقات استُخرجت منها الفلاتر، فهي متفائلة)
+    # filters_new_only: الصفقات المسجلة بعد إضافة الفلاتر فقط (اختبار حقيقي)
+    summary["filters_all"] = {name: rule_stats(analysis, r) for name, r in RULES.items()}
+    summary["filters_new_only"] = {name: rule_stats(new_only, r) for name, r in RULES.items()}
     with open(SUMMARY_FILE, "w", encoding="utf-8") as f:
         json.dump(summary, f, ensure_ascii=False, indent=2)
-    print(f"📈 Summary: {summary}")
+    print(f"📈 Summary: {json.dumps({k: v for k, v in summary.items() if not k.startswith('filters')}, ensure_ascii=False)}")
 
 
 # ---------------------------------------------------------------------
@@ -277,7 +380,7 @@ def can_open_new_trade(trade_type, entry, signal_candle_time):
 
 
 def manage_active_trades(df):
-    """يتابع الصفقات المفتوحة. يبدأ من أول شمعة كاملة بعد الدخول."""
+    """يتابع الصفقات المفتوحة. يبدأ من أول شمعة كاملة بعد الدخول، ويسجل أبعد حركة لصالح الصفقة (mfe) وضدها (mae)."""
     trades = load_trades()
     changed = False
 
@@ -292,11 +395,16 @@ def manage_active_trades(df):
             continue
 
         tp, sl, entry = float(t["tp"]), float(t["sl"]), float(t["entry"])
+        mfe, mae = 0.0, 0.0
         for _, c in df[df["datetime"] >= first_safe].iterrows():
             if t["type"] == "BUY":
                 hit_tp, hit_sl = c["high"] >= tp, c["low"] <= sl
+                mfe = max(mfe, float(c["high"]) - entry)
+                mae = max(mae, entry - float(c["low"]))
             else:
                 hit_tp, hit_sl = c["low"] <= tp, c["high"] >= sl
+                mfe = max(mfe, entry - float(c["low"]))
+                mae = max(mae, float(c["high"]) - entry)
             if not (hit_tp or hit_sl):
                 continue
 
@@ -313,6 +421,11 @@ def manage_active_trades(df):
             changed = True
             print(f"{'🎯' if result == 'WIN' else '🛑'} Trade id={t['id']} {t['type']} -> {result}")
             break
+
+        new_mfe, new_mae = round(mfe, 2), round(mae, 2)
+        if t.get("mfe") != new_mfe or t.get("mae") != new_mae:
+            t["mfe"], t["mae"] = new_mfe, new_mae
+            changed = True
 
     if changed:
         save_trades(trades)
@@ -507,7 +620,13 @@ def main():
 
     delay_min = (pd.Timestamp(now) - (candle_time + pd.Timedelta(minutes=30))).total_seconds() / 60
 
+    # فلتر الاتجاه (للتحليل فقط): شراء فوق SMA200، وبيع تحتها
+    last = df.iloc[-1]
+    sig_close, sma50, sma200 = float(last["close"]), float(last["sma50"]), float(last["sma200"])
+    with_trend = bool((final == 1 and sig_close > sma200) or (final == 0 and sig_close < sma200))
+
     trades = load_trades()
+    reversal_1h = compute_reversal_flag(trades, trade_type, now_str)
     trades.append({
         "id": max([int(t.get("id", 0)) for t in trades], default=0) + 1,
         "type": trade_type,
@@ -526,10 +645,21 @@ def main():
         "quote_age_seconds": round(quote["age_seconds"]),
         "adx": round(adx, 2),
         "models": ", ".join(f"{k}:{v}%" for k, v in confs.items()),
+        "with_trend": with_trend,
+        "signal_close": round(sig_close, 2),
+        "sma50": round(sma50, 2),
+        "sma200": round(sma200, 2),
+        "max_conf": max(confs.values()) if confs else None,
+        "n_models": len(confs),
+        "reversal_1h": reversal_1h,
+        "risk_pts": round(abs(float(entry) - float(sl)), 2),
+        "mfe": 0.0,
+        "mae": 0.0,
+        "new_schema": True,
     })
     save_trades(trades)
     export_csv_and_summary(trades)
-    print(f"✅ Shadow signal recorded: {trade_type} @ {entry:.2f} | SL {sl:.2f} | TP {tp:.2f} | delay {delay_min:.1f} min")
+    print(f"✅ Shadow signal recorded: {trade_type} @ {entry:.2f} | SL {sl:.2f} | TP {tp:.2f} | delay {delay_min:.1f} min | with_trend={with_trend}")
 
 
 if __name__ == "__main__":
