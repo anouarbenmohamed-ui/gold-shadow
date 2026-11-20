@@ -511,5 +511,24 @@
     "quote_age_seconds": 30,
     "adx": 30.39,
     "models": "RandomForest:74.0%, GradientBoosting:66.6%"
+  },
+  {
+    "id": 28,
+    "type": "SELL",
+    "strategy": "TREND",
+    "entry": 3528.94,
+    "sl": 3554.91,
+    "tp": 3485.66,
+    "status": "OPEN",
+    "open_time": "2026-11-20 17:32:26",
+    "close_time": null,
+    "close_price": null,
+    "points": null,
+    "both_touched": false,
+    "signal_candle_time": "2026-11-20T17:00:00+00:00",
+    "delay_minutes": 2.4,
+    "quote_age_seconds": 28,
+    "adx": 32.56,
+    "models": "GradientBoosting:62.5%"
   }
 ]
