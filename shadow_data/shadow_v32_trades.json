@@ -529,6 +529,8 @@
     "delay_minutes": 2.4,
     "quote_age_seconds": 28,
     "adx": 32.56,
-    "models": "GradientBoosting:62.5%"
+    "models": "GradientBoosting:62.5%",
+    "mfe": 24.96,
+    "mae": 11.01
   }
 ]

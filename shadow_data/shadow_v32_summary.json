@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-11-20 20:32:27",
+  "updated_utc": "2026-11-20 23:41:28",
   "total_signals": 28,
   "open": 1,
   "closed": 27,
@@ -7,5 +7,127 @@
   "losses": 16,
   "win_rate_pct": 40.7,
   "total_points": 7.24,
-  "avg_delay_minutes": 3.4
+  "avg_delay_minutes": 3.4,
+  "with_trend_closed": 0,
+  "with_trend_win_rate_pct": null,
+  "with_trend_points": 0,
+  "against_trend_closed": 0,
+  "against_trend_win_rate_pct": null,
+  "against_trend_points": 0,
+  "filters_all": {
+    "baseline": {
+      "closed": 26,
+      "wins": 10,
+      "win_rate_pct": 38.5,
+      "R": 0.67,
+      "points": -15.34
+    },
+    "conf_gt_70": {
+      "closed": 15,
+      "wins": 8,
+      "win_rate_pct": 53.3,
+      "R": 6.34,
+      "points": 104.28
+    },
+    "risk_le_20": {
+      "closed": 16,
+      "wins": 7,
+      "win_rate_pct": 43.8,
+      "R": 2.67,
+      "points": 39.48
+    },
+    "no_reversal_1h": {
+      "closed": 15,
+      "wins": 6,
+      "win_rate_pct": 40.0,
+      "R": 1.0,
+      "points": -13.66
+    },
+    "with_trend_sma200": {
+      "closed": 0,
+      "wins": 0,
+      "win_rate_pct": null,
+      "R": 0,
+      "points": 0
+    },
+    "conf70_and_risk20": {
+      "closed": 10,
+      "wins": 6,
+      "win_rate_pct": 60.0,
+      "R": 6.0,
+      "points": 94.47
+    },
+    "conf70_and_trend": {
+      "closed": 0,
+      "wins": 0,
+      "win_rate_pct": null,
+      "R": 0,
+      "points": 0
+    },
+    "conf70_risk20_trend": {
+      "closed": 0,
+      "wins": 0,
+      "win_rate_pct": null,
+      "R": 0,
+      "points": 0
+    }
+  },
+  "filters_new_only": {
+    "baseline": {
+      "closed": 0,
+      "wins": 0,
+      "win_rate_pct": null,
+      "R": 0,
+      "points": 0
+    },
+    "conf_gt_70": {
+      "closed": 0,
+      "wins": 0,
+      "win_rate_pct": null,
+      "R": 0,
+      "points": 0
+    },
+    "risk_le_20": {
+      "closed": 0,
+      "wins": 0,
+      "win_rate_pct": null,
+      "R": 0,
+      "points": 0
+    },
+    "no_reversal_1h": {
+      "closed": 0,
+      "wins": 0,
+      "win_rate_pct": null,
+      "R": 0,
+      "points": 0
+    },
+    "with_trend_sma200": {
+      "closed": 0,
+      "wins": 0,
+      "win_rate_pct": null,
+      "R": 0,
+      "points": 0
+    },
+    "conf70_and_risk20": {
+      "closed": 0,
+      "wins": 0,
+      "win_rate_pct": null,
+      "R": 0,
+      "points": 0
+    },
+    "conf70_and_trend": {
+      "closed": 0,
+      "wins": 0,
+      "win_rate_pct": null,
+      "R": 0,
+      "points": 0
+    },
+    "conf70_risk20_trend": {
+      "closed": 0,
+      "wins": 0,
+      "win_rate_pct": null,
+      "R": 0,
+      "points": 0
+    }
+  }
 }
