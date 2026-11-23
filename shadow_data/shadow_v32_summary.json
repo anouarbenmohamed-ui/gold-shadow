@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-11-23 06:02:23",
+  "updated_utc": "2026-11-23 06:32:28",
   "total_signals": 35,
   "open": 2,
   "closed": 33,
@@ -129,5 +129,84 @@
       "R": -1.0,
       "points": -8.17
     }
+  },
+  "by_strategy": {
+    "TREND": {
+      "closed": 32,
+      "wins": 11,
+      "win_rate_pct": 34.4,
+      "R": -2.66,
+      "points": -61.49
+    }
+  },
+  "by_type": {
+    "BUY": {
+      "closed": 16,
+      "wins": 3,
+      "win_rate_pct": 18.8,
+      "R": -8.0,
+      "points": -135.44
+    },
+    "SELL": {
+      "closed": 16,
+      "wins": 8,
+      "win_rate_pct": 50.0,
+      "R": 5.34,
+      "points": 73.95
+    }
+  },
+  "by_strategy_type": {
+    "TREND_BUY": {
+      "closed": 16,
+      "wins": 3,
+      "win_rate_pct": 18.8,
+      "R": -8.0,
+      "points": -135.44
+    },
+    "TREND_SELL": {
+      "closed": 16,
+      "wins": 8,
+      "win_rate_pct": 50.0,
+      "R": 5.34,
+      "points": 73.95
+    }
+  },
+  "by_strategy_new_only": {
+    "TREND": {
+      "closed": 5,
+      "wins": 1,
+      "win_rate_pct": 20.0,
+      "R": -2.33,
+      "points": -20.18
+    }
+  },
+  "by_strategy_type_new_only": {
+    "TREND_BUY": {
+      "closed": 2,
+      "wins": 0,
+      "win_rate_pct": 0.0,
+      "R": -2.0,
+      "points": -20.54
+    },
+    "TREND_SELL": {
+      "closed": 3,
+      "wins": 1,
+      "win_rate_pct": 33.3,
+      "R": -0.33,
+      "points": 0.36
+    }
+  },
+  "open_by_strategy": {
+    "TREND": 2
+  },
+  "excursions": {
+    "trades_with_data": 6,
+    "losses": 5,
+    "losses_reached_50pct_of_tp": 1,
+    "losses_reached_70pct_of_tp": 0,
+    "avg_mfe_pct_of_tp_in_losses": 15.9,
+    "wins": 1,
+    "avg_mae_pct_of_risk_in_wins": 0.0,
+    "wins_within_20pct_of_stop": 0
   }
 }
