@@ -109,6 +109,15 @@ def enrich(trades):
                 except Exception:
                     flag = False
             t["reversal_1h"] = flag
+        # نسبة المسافة التي قطعها السعر نحو الهدف (mfe)، ونحو الوقف (mae)
+        try:
+            if t.get("mfe") is not None:
+                reward = abs(float(t["tp"]) - float(t["entry"]))
+                t["mfe_pct_tp"] = round(float(t["mfe"]) / reward * 100, 1) if reward else None
+            if t.get("mae") is not None and t.get("risk_pts"):
+                t["mae_pct_risk"] = round(float(t["mae"]) / float(t["risk_pts"]) * 100, 1)
+        except Exception:
+            pass
         prev = t
 
 
@@ -164,7 +173,8 @@ def export_csv_and_summary(trades):
         "both_touched", "signal_candle_time", "delay_minutes",
         "quote_age_seconds", "adx", "models",
         "with_trend", "signal_close", "sma50", "sma200",
-        "max_conf", "n_models", "reversal_1h", "risk_pts", "mfe", "mae", "new_schema",
+        "max_conf", "n_models", "reversal_1h", "risk_pts", "mfe", "mae",
+        "mfe_pct_tp", "mae_pct_risk", "new_schema",
     ]
     with open(CSV_FILE, "w", encoding="utf-8-sig", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fields, extrasaction="ignore")
@@ -204,6 +214,43 @@ def export_csv_and_summary(trades):
     # filters_new_only: الصفقات المسجلة بعد إضافة الفلاتر فقط (اختبار حقيقي)
     summary["filters_all"] = {name: rule_stats(analysis, r) for name, r in RULES.items()}
     summary["filters_new_only"] = {name: rule_stats(new_only, r) for name, r in RULES.items()}
+    # نتيجة كل استراتيجية (TREND اتجاهي / RANGE عرضي) وكل اتجاه (BUY / SELL)
+    def _group(rows, key_fn):
+        keys = sorted({key_fn(t) for t in rows})
+        return {k: rule_stats(rows, lambda t, k=k: key_fn(t) == k) for k in keys}
+
+    def _strategy(t):
+        return t.get("strategy") or "?"
+
+    def _type(t):
+        return t.get("type") or "?"
+
+    def _strategy_type(t):
+        return f"{_strategy(t)}_{_type(t)}"
+
+    summary["by_strategy"] = _group(analysis, _strategy)
+    summary["by_type"] = _group(analysis, _type)
+    summary["by_strategy_type"] = _group(analysis, _strategy_type)
+    summary["by_strategy_new_only"] = _group(new_only, _strategy)
+    summary["by_strategy_type_new_only"] = _group(new_only, _strategy_type)
+    summary["open_by_strategy"] = {
+        k: sum(1 for t in trades if t.get("status") == "OPEN" and _strategy(t) == k)
+        for k in sorted({_strategy(t) for t in trades})
+    }
+
+    ex = [t for t in analysis if t.get("mfe_pct_tp") is not None]
+    ex_loss = [t for t in ex if t["status"] == "LOSS"]
+    ex_win = [t for t in ex if t["status"] == "WIN" and t.get("mae_pct_risk") is not None]
+    summary["excursions"] = {
+        "trades_with_data": len(ex),
+        "losses": len(ex_loss),
+        "losses_reached_50pct_of_tp": sum(1 for t in ex_loss if t["mfe_pct_tp"] >= 50),
+        "losses_reached_70pct_of_tp": sum(1 for t in ex_loss if t["mfe_pct_tp"] >= 70),
+        "avg_mfe_pct_of_tp_in_losses": round(float(np.mean([t["mfe_pct_tp"] for t in ex_loss])), 1) if ex_loss else None,
+        "wins": len(ex_win),
+        "avg_mae_pct_of_risk_in_wins": round(float(np.mean([t["mae_pct_risk"] for t in ex_win])), 1) if ex_win else None,
+        "wins_within_20pct_of_stop": sum(1 for t in ex_win if t["mae_pct_risk"] >= 80),
+    }
     with open(SUMMARY_FILE, "w", encoding="utf-8") as f:
         json.dump(summary, f, ensure_ascii=False, indent=2)
     print(f"📈 Summary: {json.dumps({k: v for k, v in summary.items() if not k.startswith('filters')}, ensure_ascii=False)}")
@@ -380,7 +427,12 @@ def can_open_new_trade(trade_type, entry, signal_candle_time):
 
 
 def manage_active_trades(df):
-    """يتابع الصفقات المفتوحة. يبدأ من أول شمعة كاملة بعد الدخول، ويسجل أبعد حركة لصالح الصفقة (mfe) وضدها (mae)."""
+    """يتابع الصفقات المفتوحة. يبدأ من أول شمعة كاملة بعد الدخول.
+    mfe = أبعد حركة لصالح الصفقة، mae = أبعد حركة ضدها (بالنقاط).
+    شمعة الإغلاق: ترتيب الحركة داخلها مجهول، فلا نحتسب منها إلا ما هو مؤكد:
+    - خسارة: mae = مسافة الوقف، و mfe من الشموع السابقة فقط (حد أدنى).
+    - ربح:   mfe = مسافة الهدف، و mae من الشموع السابقة فقط (حد أدنى).
+    """
     trades = load_trades()
     changed = False
 
@@ -395,22 +447,26 @@ def manage_active_trades(df):
             continue
 
         tp, sl, entry = float(t["tp"]), float(t["sl"]), float(t["entry"])
+        risk, reward = abs(entry - sl), abs(tp - entry)
         mfe, mae = 0.0, 0.0
         for _, c in df[df["datetime"] >= first_safe].iterrows():
             if t["type"] == "BUY":
                 hit_tp, hit_sl = c["high"] >= tp, c["low"] <= sl
-                mfe = max(mfe, float(c["high"]) - entry)
-                mae = max(mae, entry - float(c["low"]))
+                fav, adv = float(c["high"]) - entry, entry - float(c["low"])
             else:
                 hit_tp, hit_sl = c["low"] <= tp, c["high"] >= sl
-                mfe = max(mfe, entry - float(c["low"]))
-                mae = max(mae, float(c["high"]) - entry)
+                fav, adv = entry - float(c["low"]), float(c["high"]) - entry
             if not (hit_tp or hit_sl):
+                mfe, mae = max(mfe, fav), max(mae, adv)
                 continue
 
             # لمس الهدف والوقف في نفس الشمعة => خسارة تحفظياً
             result = "LOSS" if hit_sl else "WIN"
             exit_price = sl if result == "LOSS" else tp
+            if result == "LOSS":
+                mae = risk
+            else:
+                mfe = reward
             t["status"] = result
             t["close_price"] = exit_price
             t["close_time"] = c["datetime"].strftime("%Y-%m-%d %H:%M UTC")
