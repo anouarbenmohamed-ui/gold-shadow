@@ -1,26 +1,26 @@
 {
-  "updated_utc": "2026-11-23 02:02:26",
+  "updated_utc": "2026-11-23 02:32:24",
   "total_signals": 32,
-  "open": 2,
-  "closed": 30,
+  "open": 1,
+  "closed": 31,
   "wins": 11,
-  "losses": 19,
-  "win_rate_pct": 36.7,
-  "total_points": -34.27,
+  "losses": 20,
+  "win_rate_pct": 35.5,
+  "total_points": -47.44,
   "avg_delay_minutes": 3.3,
-  "with_trend_closed": 1,
+  "with_trend_closed": 2,
   "with_trend_win_rate_pct": 0.0,
-  "with_trend_points": -8.17,
+  "with_trend_points": -21.34,
   "against_trend_closed": 1,
   "against_trend_win_rate_pct": 0.0,
   "against_trend_points": -7.37,
   "filters_all": {
     "baseline": {
-      "closed": 29,
+      "closed": 30,
       "wins": 10,
-      "win_rate_pct": 34.5,
-      "R": -2.33,
-      "points": -56.85
+      "win_rate_pct": 33.3,
+      "R": -3.33,
+      "points": -70.02
     },
     "conf_gt_70": {
       "closed": 17,
@@ -30,11 +30,11 @@
       "points": 88.74
     },
     "risk_le_20": {
-      "closed": 18,
+      "closed": 19,
       "wins": 7,
-      "win_rate_pct": 38.9,
-      "R": 0.67,
-      "points": 23.94
+      "win_rate_pct": 36.8,
+      "R": -0.33,
+      "points": 10.77
     },
     "no_reversal_1h": {
       "closed": 17,
@@ -44,11 +44,11 @@
       "points": -47.0
     },
     "with_trend_sma200": {
-      "closed": 1,
+      "closed": 2,
       "wins": 0,
       "win_rate_pct": 0.0,
-      "R": -1.0,
-      "points": -8.17
+      "R": -2.0,
+      "points": -21.34
     },
     "conf70_and_risk20": {
       "closed": 12,
@@ -74,11 +74,11 @@
   },
   "filters_new_only": {
     "baseline": {
-      "closed": 2,
+      "closed": 3,
       "wins": 0,
       "win_rate_pct": 0.0,
-      "R": -2.0,
-      "points": -15.54
+      "R": -3.0,
+      "points": -28.71
     },
     "conf_gt_70": {
       "closed": 2,
@@ -88,11 +88,11 @@
       "points": -15.54
     },
     "risk_le_20": {
-      "closed": 2,
+      "closed": 3,
       "wins": 0,
       "win_rate_pct": 0.0,
-      "R": -2.0,
-      "points": -15.54
+      "R": -3.0,
+      "points": -28.71
     },
     "no_reversal_1h": {
       "closed": 1,
@@ -102,11 +102,11 @@
       "points": -7.37
     },
     "with_trend_sma200": {
-      "closed": 1,
+      "closed": 2,
       "wins": 0,
       "win_rate_pct": 0.0,
-      "R": -1.0,
-      "points": -8.17
+      "R": -2.0,
+      "points": -21.34
     },
     "conf70_and_risk20": {
       "closed": 2,
