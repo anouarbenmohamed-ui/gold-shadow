@@ -1,12 +1,12 @@
 {
-  "updated_utc": "2026-11-20 23:41:28",
-  "total_signals": 28,
+  "updated_utc": "2026-11-23 00:02:24",
+  "total_signals": 29,
   "open": 1,
-  "closed": 27,
+  "closed": 28,
   "wins": 11,
-  "losses": 16,
-  "win_rate_pct": 40.7,
-  "total_points": 7.24,
+  "losses": 17,
+  "win_rate_pct": 39.3,
+  "total_points": -18.73,
   "avg_delay_minutes": 3.4,
   "with_trend_closed": 0,
   "with_trend_win_rate_pct": null,
@@ -16,11 +16,11 @@
   "against_trend_points": 0,
   "filters_all": {
     "baseline": {
-      "closed": 26,
+      "closed": 27,
       "wins": 10,
-      "win_rate_pct": 38.5,
-      "R": 0.67,
-      "points": -15.34
+      "win_rate_pct": 37.0,
+      "R": -0.33,
+      "points": -41.31
     },
     "conf_gt_70": {
       "closed": 15,
@@ -37,11 +37,11 @@
       "points": 39.48
     },
     "no_reversal_1h": {
-      "closed": 15,
+      "closed": 16,
       "wins": 6,
-      "win_rate_pct": 40.0,
-      "R": 1.0,
-      "points": -13.66
+      "win_rate_pct": 37.5,
+      "R": 0.0,
+      "points": -39.63
     },
     "with_trend_sma200": {
       "closed": 0,
