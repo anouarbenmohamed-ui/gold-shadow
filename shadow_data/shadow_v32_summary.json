@@ -1,13 +1,13 @@
 {
-  "updated_utc": "2026-11-24 01:02:22",
-  "total_signals": 43,
-  "open": 0,
+  "updated_utc": "2026-11-24 01:32:27",
+  "total_signals": 44,
+  "open": 1,
   "closed": 43,
   "wins": 16,
   "losses": 27,
   "win_rate_pct": 37.2,
   "total_points": -25.84,
-  "avg_delay_minutes": 3.1,
+  "avg_delay_minutes": 3.0,
   "with_trend_closed": 8,
   "with_trend_win_rate_pct": 37.5,
   "with_trend_points": 5.81,
@@ -197,7 +197,7 @@
     }
   },
   "open_by_strategy": {
-    "TREND": 0
+    "TREND": 1
   },
   "excursions": {
     "trades_with_data": 16,
