@@ -980,7 +980,7 @@
     "reversal_1h": false,
     "risk_pts": 17.1,
     "mfe": 24.54,
-    "mae": 0.0,
+    "mae": 2.27,
     "new_schema": true
   }
 ]
