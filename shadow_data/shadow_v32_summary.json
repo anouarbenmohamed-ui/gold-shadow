@@ -1,133 +1,133 @@
 {
-  "updated_utc": "2026-11-25 02:32:28",
-  "total_signals": 49,
+  "updated_utc": "2026-11-25 03:02:29",
+  "total_signals": 50,
   "open": 1,
-  "closed": 48,
+  "closed": 49,
   "wins": 19,
-  "losses": 29,
-  "win_rate_pct": 39.6,
-  "total_points": 9.83,
+  "losses": 30,
+  "win_rate_pct": 38.8,
+  "total_points": -7.22,
   "avg_delay_minutes": 3.0,
-  "with_trend_closed": 9,
-  "with_trend_win_rate_pct": 33.3,
-  "with_trend_points": -12.93,
+  "with_trend_closed": 10,
+  "with_trend_win_rate_pct": 30.0,
+  "with_trend_points": -29.98,
   "against_trend_closed": 11,
   "against_trend_win_rate_pct": 45.5,
   "against_trend_points": 41.49,
   "filters_all": {
     "baseline": {
-      "closed": 47,
+      "closed": 48,
       "wins": 18,
-      "win_rate_pct": 38.3,
-      "R": 0.34,
-      "points": -12.75
+      "win_rate_pct": 37.5,
+      "R": -0.66,
+      "points": -29.8
     },
     "conf_gt_70": {
-      "closed": 25,
+      "closed": 26,
       "wins": 12,
-      "win_rate_pct": 48.0,
-      "R": 7.0,
-      "points": 133.39
+      "win_rate_pct": 46.2,
+      "R": 6.0,
+      "points": 116.34
     },
     "risk_le_20": {
-      "closed": 36,
+      "closed": 37,
       "wins": 15,
-      "win_rate_pct": 41.7,
-      "R": 3.34,
-      "points": 68.04
+      "win_rate_pct": 40.5,
+      "R": 2.34,
+      "points": 50.99
     },
     "no_reversal_1h": {
-      "closed": 31,
+      "closed": 32,
       "wins": 12,
-      "win_rate_pct": 38.7,
-      "R": 0.33,
-      "points": -30.47
+      "win_rate_pct": 37.5,
+      "R": -0.67,
+      "points": -47.52
     },
     "with_trend_sma200": {
-      "closed": 9,
+      "closed": 10,
       "wins": 3,
-      "win_rate_pct": 33.3,
-      "R": -1.0,
-      "points": -12.93
+      "win_rate_pct": 30.0,
+      "R": -2.0,
+      "points": -29.98
     },
     "conf70_and_risk20": {
-      "closed": 20,
+      "closed": 21,
       "wins": 10,
-      "win_rate_pct": 50.0,
-      "R": 6.67,
-      "points": 123.58
+      "win_rate_pct": 47.6,
+      "R": 5.67,
+      "points": 106.53
     },
     "conf70_and_trend": {
-      "closed": 5,
+      "closed": 6,
       "wins": 2,
-      "win_rate_pct": 40.0,
-      "R": 0.33,
-      "points": 9.82
+      "win_rate_pct": 33.3,
+      "R": -0.67,
+      "points": -7.23
     },
     "conf70_risk20_trend": {
-      "closed": 5,
+      "closed": 6,
       "wins": 2,
-      "win_rate_pct": 40.0,
-      "R": 0.33,
-      "points": 9.82
+      "win_rate_pct": 33.3,
+      "R": -0.67,
+      "points": -7.23
     }
   },
   "filters_new_only": {
     "baseline": {
-      "closed": 20,
+      "closed": 21,
       "wins": 8,
-      "win_rate_pct": 40.0,
-      "R": 0.67,
-      "points": 28.56
+      "win_rate_pct": 38.1,
+      "R": -0.33,
+      "points": 11.51
     },
     "conf_gt_70": {
-      "closed": 10,
+      "closed": 11,
       "wins": 4,
-      "win_rate_pct": 40.0,
-      "R": 0.67,
-      "points": 29.11
+      "win_rate_pct": 36.4,
+      "R": -0.33,
+      "points": 12.06
     },
     "risk_le_20": {
-      "closed": 20,
+      "closed": 21,
       "wins": 8,
-      "win_rate_pct": 40.0,
-      "R": 0.67,
-      "points": 28.56
+      "win_rate_pct": 38.1,
+      "R": -0.33,
+      "points": 11.51
     },
     "no_reversal_1h": {
-      "closed": 15,
+      "closed": 16,
       "wins": 6,
-      "win_rate_pct": 40.0,
-      "R": 0.33,
-      "points": 9.16
+      "win_rate_pct": 37.5,
+      "R": -0.67,
+      "points": -7.89
     },
     "with_trend_sma200": {
-      "closed": 9,
+      "closed": 10,
       "wins": 3,
-      "win_rate_pct": 33.3,
-      "R": -1.0,
-      "points": -12.93
+      "win_rate_pct": 30.0,
+      "R": -2.0,
+      "points": -29.98
     },
     "conf70_and_risk20": {
-      "closed": 10,
+      "closed": 11,
       "wins": 4,
-      "win_rate_pct": 40.0,
-      "R": 0.67,
-      "points": 29.11
+      "win_rate_pct": 36.4,
+      "R": -0.33,
+      "points": 12.06
     },
     "conf70_and_trend": {
-      "closed": 5,
+      "closed": 6,
       "wins": 2,
-      "win_rate_pct": 40.0,
-      "R": 0.33,
-      "points": 9.82
+      "win_rate_pct": 33.3,
+      "R": -0.67,
+      "points": -7.23
     },
     "conf70_risk20_trend": {
-      "closed": 5,
+      "closed": 6,
       "wins": 2,
-      "win_rate_pct": 40.0,
-      "R": 0.33,
-      "points": 9.82
+      "win_rate_pct": 33.3,
+      "R": -0.67,
+      "points": -7.23
     }
   },
   "by_strategy": {
@@ -139,11 +139,11 @@
       "points": -22.62
     },
     "TREND": {
-      "closed": 44,
+      "closed": 45,
       "wins": 17,
-      "win_rate_pct": 38.6,
-      "R": 1.34,
-      "points": 9.87
+      "win_rate_pct": 37.8,
+      "R": 0.34,
+      "points": -7.18
     }
   },
   "by_type": {
@@ -155,11 +155,11 @@
       "points": -146.43
     },
     "SELL": {
-      "closed": 23,
+      "closed": 24,
       "wins": 12,
-      "win_rate_pct": 52.2,
-      "R": 8.33,
-      "points": 133.68
+      "win_rate_pct": 50.0,
+      "R": 7.33,
+      "points": 116.63
     }
   },
   "by_strategy_type": {
@@ -185,11 +185,11 @@
       "points": -108.29
     },
     "TREND_SELL": {
-      "closed": 22,
+      "closed": 23,
       "wins": 11,
-      "win_rate_pct": 50.0,
-      "R": 7.33,
-      "points": 118.16
+      "win_rate_pct": 47.8,
+      "R": 6.33,
+      "points": 101.11
     }
   },
   "by_strategy_new_only": {
@@ -201,11 +201,11 @@
       "points": -22.62
     },
     "TREND": {
-      "closed": 17,
+      "closed": 18,
       "wins": 7,
-      "win_rate_pct": 41.2,
-      "R": 1.67,
-      "points": 51.18
+      "win_rate_pct": 38.9,
+      "R": 0.67,
+      "points": 34.13
     }
   },
   "by_strategy_type_new_only": {
@@ -231,11 +231,11 @@
       "points": 6.61
     },
     "TREND_SELL": {
-      "closed": 9,
+      "closed": 10,
       "wins": 4,
-      "win_rate_pct": 44.4,
-      "R": 1.67,
-      "points": 44.57
+      "win_rate_pct": 40.0,
+      "R": 0.67,
+      "points": 27.52
     }
   },
   "open_by_strategy": {
@@ -243,11 +243,11 @@
     "TREND": 1
   },
   "excursions": {
-    "trades_with_data": 21,
-    "losses": 13,
-    "losses_reached_50pct_of_tp": 2,
-    "losses_reached_70pct_of_tp": 1,
-    "avg_mfe_pct_of_tp_in_losses": 19.9,
+    "trades_with_data": 22,
+    "losses": 14,
+    "losses_reached_50pct_of_tp": 3,
+    "losses_reached_70pct_of_tp": 2,
+    "avg_mfe_pct_of_tp_in_losses": 24.0,
     "wins": 8,
     "avg_mae_pct_of_risk_in_wins": 12.7,
     "wins_within_20pct_of_stop": 0
