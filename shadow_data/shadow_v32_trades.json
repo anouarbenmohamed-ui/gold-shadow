@@ -1219,7 +1219,7 @@
     "n_models": 1,
     "reversal_1h": false,
     "risk_pts": 16.73,
-    "mfe": 0.0,
+    "mfe": 14.2,
     "mae": 0.0,
     "new_schema": true
   }
