@@ -1489,7 +1489,7 @@
     "n_models": 2,
     "reversal_1h": true,
     "risk_pts": 28.83,
-    "mfe": 15.28,
+    "mfe": 17.04,
     "mae": 28.58,
     "new_schema": true
   },
@@ -1500,11 +1500,11 @@
     "entry": 3556.75,
     "sl": 3579.64,
     "tp": 3518.6,
-    "status": "OPEN",
+    "status": "LOSS",
     "open_time": "2026-11-26 01:02:29",
-    "close_time": null,
-    "close_price": null,
-    "points": null,
+    "close_time": "2026-11-26 02:00 UTC",
+    "close_price": 3579.64,
+    "points": -22.89,
     "both_touched": false,
     "signal_candle_time": "2026-11-26T00:30:00+00:00",
     "delay_minutes": 2.5,
@@ -1520,7 +1520,7 @@
     "reversal_1h": false,
     "risk_pts": 22.89,
     "mfe": 1.32,
-    "mae": 13.83,
+    "mae": 22.89,
     "new_schema": true
   }
 ]
