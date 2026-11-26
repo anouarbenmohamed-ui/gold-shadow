@@ -1,7 +1,7 @@
 {
-  "updated_utc": "2026-11-26 00:32:25",
-  "total_signals": 60,
-  "open": 1,
+  "updated_utc": "2026-11-26 01:02:31",
+  "total_signals": 61,
+  "open": 2,
   "closed": 59,
   "wins": 25,
   "losses": 34,
@@ -240,7 +240,7 @@
   },
   "open_by_strategy": {
     "RANGE": 0,
-    "TREND": 1
+    "TREND": 2
   },
   "excursions": {
     "trades_with_data": 32,
